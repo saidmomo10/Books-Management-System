@@ -11,7 +11,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-
+// AUTHENTICATION
 Route::controller(AuthController::class)->group(function() {
     Route::post('auth/register', 'register');
     Route::post('auth/login', 'login');
@@ -20,15 +20,15 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 
 
-
+//BOOKS
 Route::apiResource('book', BookController::class);
 Route::get('booksearch', [BookController::class, 'search']);
-Route::patch('affect/{id}', [BookController::class, 'affectAuthors']);
+Route::post('affect/{id}', [BookController::class, 'affectAuthors']);
 Route::get('leaderbord', [BookController::class, 'leaderbord']);
 
 
 
-
+//AUTHORS
 Route::controller(AuthorController::class)->group(function(){
     Route::get('authors', 'index');
     Route::get('author/{id}', 'show');

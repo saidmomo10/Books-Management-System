@@ -26,8 +26,7 @@ class BookController extends Controller
      */
     
 
-    public function index()
-    {
+    public function index(){
         $book = Book::with('authors')->get();
         return response()->json($book);
     }
@@ -58,8 +57,7 @@ class BookController extends Controller
      */
 
 
-    public function search(Request $request)
-    {
+    public function search(Request $request){
         $query = $request->input('query');
 
         if (!$query) {
@@ -98,8 +96,7 @@ class BookController extends Controller
      *     @OA\Response(response=400, description="Bad request")
      * )
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         $request->validate([
             'title' => 'required',
             'description' => 'required',
@@ -115,13 +112,13 @@ class BookController extends Controller
      * @OA\Post(
      *     path="/api/affect/{id}",
      *     tags={"Books"},
-     *     summary="Assign an author",
-     *     description="Assign author names to each book in the library",
+     *     summary="Affecter un auteur",
+     *     description="Creates a new book with the given data",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"authorIds"},
-     *             @OA\Property(property="authorIds", type="integer"),
+     *             required={"author_ids"},
+     *             @OA\Property(property="author_ids", type="integer"),
      *         )
      *     ),
      *     @OA\Response(
@@ -131,18 +128,14 @@ class BookController extends Controller
      *     @OA\Response(response=400, description="Bad request")
      * )
      */
-    public function affectAuthors(Request $request, $id)
-    {
+    public function affectAuthors(Request $request, $id){
+        
         $book = Book::findOrFail($id);
         $authorIds = $request->input('author_ids');
 
-        if (!$authorIds || !is_array($authorIds)) {
-            return response()->json(['error' => 'Error'], 400);
-        }
-
         $book->authors()->sync($authorIds);
 
-        return response()->json('Auteur affecté avec succès', 201);
+        return response()->json('Authors attached successfully', 201);
     }
 
     /**
@@ -169,6 +162,10 @@ class BookController extends Controller
     public function show($id){
         $book = Book::with('authors')->findOrFail($id);
         $book->increment('views');
+
+        if (!$book) {
+            return response()->json(['message' => "Ce livre n'existe pas"], 404);
+        }
 
         return response()->json($book);
     }
@@ -222,8 +219,7 @@ class BookController extends Controller
      *     @OA\Response(response=404, description="Resource Not Found")
      * )
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         $request->validate([
             'title' => 'required',
             'description' => 'required',
@@ -254,8 +250,7 @@ class BookController extends Controller
      *     @OA\Response(response=404, description="Resource Not Found")
      * )
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
         $book = Book::findOrFail($id);
         $book->delete();
         return response()->json(['message' => 'Livre supprimé avec succès'], 200);

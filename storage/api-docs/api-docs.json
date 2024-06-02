@@ -1,14 +1,10 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "API Documentation",
+        "title": "Books Management System's API Documentation",
         "description": "API documentation for the Book Management System",
         "contact": {
             "email": "support@example.com"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         },
         "version": "1.0.0"
     },
@@ -623,8 +619,8 @@
                 "tags": [
                     "Books"
                 ],
-                "summary": "Assign an author",
-                "description": "Assign author names to each book in the library",
+                "summary": "Affecter un auteur",
+                "description": "Creates a new book with the given data",
                 "operationId": "72aa599c084fc1d222cf3a49655505ed",
                 "requestBody": {
                     "required": true,
@@ -632,10 +628,10 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "authorIds"
+                                    "author_ids"
                                 ],
                                 "properties": {
-                                    "authorIds": {
+                                    "author_ids": {
                                         "type": "integer"
                                     }
                                 },

@@ -23,8 +23,7 @@ class AuthorController extends Controller
      *     @OA\Response(response=404, description="Resource Not Found")
      * )
      */
-    public function index()
-    {
+    public function index(){
         $author = Author::with('books')->get();
 
         return response()->json($author);
@@ -92,8 +91,7 @@ class AuthorController extends Controller
      *     @OA\Response(response=400, description="Bad request")
      * )
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         $request->validate([
             'name' => 'required',
             'biography' => 'required',
@@ -126,9 +124,11 @@ class AuthorController extends Controller
      * )
      */
 
-     public function show($id)
-    {
+     public function show($id){
         $author = Author::find($id);
+        if (!$author) {
+            return response()->json(['message' => "Cet auteur n'existe pas"], 404);
+        }
         return response()->json($author);
     }
 
@@ -190,8 +190,7 @@ class AuthorController extends Controller
      *     @OA\Response(response=404, description="Resource Not Found")
      * )
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         $request->validate([
             'name' => 'required',
             'biography' => 'required',
@@ -222,8 +221,7 @@ class AuthorController extends Controller
      *     @OA\Response(response=404, description="Resource Not Found")
      * )
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
         $author = Author::findOrFail($id);
         $author->delete();
         return response()->json(['message' => 'Auteur supprimé avec succès'], 200);

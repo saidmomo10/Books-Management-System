@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Mail\ConfirmationEmail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -73,7 +72,7 @@ class AuthController extends Controller
 
       $response = [
           'status' => 'success',
-          'message' => 'User is created successfully.',
+          'message' => 'Utilisateur créé avec succès',
       ];
       
       $user->save();
@@ -133,8 +132,7 @@ class AuthController extends Controller
      *     )
      * )
      */
-    public function login(Request $request)
-    {
+    public function login(Request $request){
         $validate = Validator::make($request->all(), [
             'email' => 'required|string|email',
             'password' => 'required|string'
@@ -164,7 +162,7 @@ class AuthController extends Controller
         
         $response = [
             'status' => 'success',
-            'message' => 'User is logged in successfully.',
+            'message' => 'Vous êtes connecté.',
             'data' => $data,
         ];
 
@@ -190,12 +188,11 @@ class AuthController extends Controller
      *     )
      * )
      */
-    public function logout(Request $request)
-    {
+    public function logout(Request $request){
         auth()->user()->tokens()->delete();
         return response()->json([
             'status' => 'success',
-            'message' => 'User is logged out successfully'
+            'message' => 'Déconnecté'
             ], 200);
     }    
 
